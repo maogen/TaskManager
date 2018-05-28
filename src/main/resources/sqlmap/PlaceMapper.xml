@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间，对sql进行分类化管理 -->
+<mapper namespace="com.tgram.android.task.mapper.PlaceMapper">
+    <!-- 查询所有地市 -->
+    <select id="findAllPlace" resultType="com.tgram.android.task.bean.Place">
+        select * from place
+    </select>
+    <!-- 根据id查找地址 -->
+    <select id="findPlaceById" parameterType="String" resultType="com.tgram.android.task.bean.Place">
+        select * from place where placeId = #{placeId}
+    </select>
+    <!-- 根据名称查找地市 -->
+    <select id="findPlaceByName" parameterType="String" resultType="com.tgram.android.task.bean.Place">
+        select * from place where placeName = #{placeName}
+    </select>
+
+
+    <!-- 新增地市 -->
+    <insert id="insertPlace" parameterType="com.tgram.android.task.bean.Place">
+        <selectKey keyProperty="placeId" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into place (placeName,description) values (#{placeName}, #{description})
+    </insert>
+
+
+    <!-- 根据id更新地市信息 -->
+    <update id="updatePlace" parameterType="com.tgram.android.task.bean.Place">
+        update place set placeName=#{placeName}, description=#{description} where placeId = #{placeId}
+    </update>
+
+    <!-- 删除地市，地市关联的项目，关联的记录 -->
+    <delete id="deletePlace" parameterType="String">
+        delete a.*,b.*,c.*
+        from place a
+        left join project b
+        on a.placeId = b.placeId
+        left join ipRecord c
+        on b.projectId = c.projectId
+        where a.placeId = #{placeId}
+    </delete>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间，对sql进行分类化管理 -->
+<mapper namespace="com.tgram.android.task.mapper.UserMapper">
+    <!-- 根据用户名查询用户 -->
+    <select id="findUserByName" parameterType="String" resultType="com.tgram.android.task.bean.LoginResult">
+        select * from user where username = #{username}
+    </select>
+
+    <!-- 根据用户名查询token -->
+    <select id="findTokenByName" parameterType="String" resultType="com.tgram.android.task.bean.Token">
+        select * from tokenRecord where username = #{username}
+    </select>
+    <!-- 新增token -->
+    <insert id="insertToken" parameterType="com.tgram.android.task.bean.Token">
+        insert into  tokenRecord (username,token) values (#{username}, #{token})
+    </insert>
+    <!-- 根据用户名更新token -->
+    <update id="updateToken" parameterType="com.tgram.android.task.bean.Token">
+        update tokenRecord set token=#{token} where username = #{username}
+    </update>
+
+    <!-- 根据token查询记录-->
+    <select id="findTokenByToken" parameterType="String" resultType="com.tgram.android.task.bean.Token">
+        select * from tokenRecord where token=#{token}
+    </select>
+</mapper>

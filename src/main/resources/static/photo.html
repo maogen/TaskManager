@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Insert title here</title>
+    <script type="text/javascript">
+        var compressImagePath;
+        function camera() {
+             // 调用系统相机
+             // tgramJS.cameraSystem();
+             // 调用自定义相机
+             tgramJS.camera();
+        }
+        function album() {
+             // 调用系统相册
+             tgramJS.album();
+        }
+        function showImage(path){
+             // 调用相机或者相册后，回调方法
+             console.log("相机相册返回的图片路径:" + path);
+             compressImagePath = path;
+        }
+        function showImageBase64(stream){
+             // 调用相机或者相册后，回调方法
+             console.log("相机相册返回的图片流:" + stream);
+             document.getElementById("img").src = "data:image/png;base64," + stream;
+        }
+        function getImageError(errorCode){
+             // 调用相机或者相册失败，3001-相机拍照失败；3002-相册选择失败
+             console.log("调用相机或者相册失败:" + errorCode);
+        }
+        function tgramLocation(){
+             // 调用定位、选择位置功能，跳转到定位界面
+             var location =  document.getElementById("locationText").innerHTML;
+             tgramJS.getLocation(location);
+        }
+        function locationTgram(location){
+            // 选择位置之后，回调方法
+            console.log("location:"+location);
+            document.getElementById("locationText").innerHTML = "" + location  ;
+        }
+        function compressImage(){
+            // 点击压缩图片
+            tgramJS.compressImage(compressImagePath);
+        }
+        function showCompressImage(imagePath){
+            // 压缩图片之后的回调
+            console.log("得到的压缩后的图片路径:"+imagePath);
+        }
+        function showCompressImageBase64(fileStream){
+            console.log("压缩后的图片文件流:"+fileStream);
+            document.getElementById("imgCompress").src = "data:image/png;base64," + fileStream;
+        }
+        function IDCardScan(){
+            tgramJS.IDCardScan();
+        }
+
+        function idCardResultTgram(idCardResult){
+            // 扫描身份证结果
+            var obj = JSON.parse(idCardResult);
+            document.getElementById("IDCardText").innerHTML = idCardResult;
+        }
+        function idCardResultTgramFace(stream){
+            // 扫描身份证结果头像流
+            document.getElementById("FaceImage").src = "data:image/png;base64," + stream;
+        }
+        function idCardError(errorCode){
+            // 扫描身份证失败
+            console.log("扫描身份证失败:" + errorCode);
+        }
+        function downloadFile(){
+            // 点击下载文件
+            tgramJS.downloadFile("http://192.168.201.73:9001/api/file/testFile","");
+        }
+        function downloadFileCallBack(json){
+            // 下载文件的回调，返回的是一个json
+            console.log("下载文件状态：" + json);
+        }
+
+
+
+    </script>
+</head>
+<body>
+<br/>
+<br/>
+<input onclick="album();" type="button" style="height: 50px" value="相册选择照片"/> <br/>
+<br/>
+******************************
+<br/>
+<input onclick="camera();" type="button" style="height: 50px" value="调用相机拍照"/> <br/>
+<br/>
+******************************
+<br/>
+<img id="img" src="" width="100" height="100"/>
+<br/>
+<input onclick="compressImage();" type="button" style="height: 50px" value="压缩图片"/>
+<br/>
+******************************
+<br/>
+<img id="imgCompress" src="" width="100" height="100"/>
+<br/>
+******************************
+<br/>
+<input type="file" style="height: 50px" accept="image/*;capture=camera">
+<br/>
+******************************
+<br/>
+<input onclick="tgramLocation();" type="button" style="height: 50px" value="获取定位坐标"/>
+<br/>
+<p id="locationText">120.379726,36.0697</p>
+<br/>
+******************************
+<br/>
+<input onclick="IDCardScan();" type="button" style="height: 50px" value="扫描身份证"/>
+<p id="IDCardText"></p>
+<img id="FaceImage" src="" width="100" height="120"/>
+<br/>
+******************************
+<br/>
+<input onclick="downloadFile();" type="button" style="height: 50px" value="下载文件"/> <br/>
+<br/>
+<a href="/api/file/testFile" download="">点击下载</a>
+<br/>
+</body>
+</html>

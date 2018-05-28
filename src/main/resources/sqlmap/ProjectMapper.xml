@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间，对sql进行分类化管理 -->
+<mapper namespace="com.tgram.android.task.mapper.ProjectMapper">
+    <!-- 根据地市id查询关联的项目 -->
+    <select id="findProjectByPlaceId" parameterType="String" resultType="com.tgram.android.task.bean.Project">
+        select * from project where placeId = #{placeId}
+    </select>
+
+    <!-- 根据id查找项目 -->
+    <select id="findProjectById" parameterType="String" resultType="com.tgram.android.task.bean.Project">
+        select * from project where projectId = #{projectId}
+    </select>
+
+    <!-- 根据地市id和名称查找项目 -->
+    <select id="findProjectByPlaceIdAndName" parameterType="String" resultType="com.tgram.android.task.bean.Project">
+        select * from project where placeId = #{0} and projectName = #{1}
+    </select>
+
+    <!-- 新增项目 -->
+    <insert id="insertProject" parameterType="com.tgram.android.task.bean.Project">
+        <selectKey keyProperty="projectId" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into project (placeId,projectName,description) values (#{placeId},#{projectName}, #{description})
+    </insert>
+
+    <!-- 根据id更新项目信息 -->
+    <update id="updateProject" parameterType="com.tgram.android.task.bean.Project">
+        update project set projectName=#{projectName}, description=#{description} where projectId = #{projectId}
+    </update>
+
+    <!-- 删除项目以及和项目关联的ip记录表 -->
+    <delete id="deleteProject" parameterType="String">
+        delete a.*,b.*
+        from project a
+        left join ipRecord b
+        on a.projectId = b.projectId
+        where a.projectId = #{projectId}
+    </delete>
+
+</mapper>

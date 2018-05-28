@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间，对sql进行分类化管理 -->
+<mapper namespace="com.tgram.android.task.mapper.IPRecordMapper">
+
+    <!-- 根据项目id查询关联的ip、端口记录 -->
+    <select id="findRecordByProject" parameterType="String" resultType="com.tgram.android.task.bean.IPRecord">
+        select * from ipRecord where projectId = #{projectId}
+    </select>
+
+    <!-- 根据记录id查询记录信息 -->
+    <select id="findRecordById" parameterType="String" resultType="com.tgram.android.task.bean.IPRecord">
+        select * from ipRecord where recordId = #{recordId}
+    </select>
+    
+    <!-- 新增项目的ip、端口记录 -->
+    <insert id="insertRecord" parameterType="com.tgram.android.task.bean.IPRecord">
+        <selectKey keyProperty="recordId" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ipRecord (
+        projectId, recordName,
+        mainIP,mainPort,mainMappingIP,mainMappingPort,
+        mapUrl,description
+        )
+        values (#{projectId},#{recordName},
+        #{mainIP},#{mainPort},#{mainMappingIP},#{mainMappingPort},
+        #{mapUrl},#{description})
+    </insert>
+
+    <!-- 修改ip、端口记录 -->
+    <update id="updateRecord" parameterType="com.tgram.android.task.bean.IPRecord">
+        update ipRecord set
+        recordName=#{recordName},
+        mainIP=#{mainIP},mainPort=#{mainPort},
+        mainMappingIP=#{mainMappingIP},mainMappingPort=#{mainMappingPort},
+        mapUrl=#{mapUrl},description=#{description}
+        where
+        recordId = #{recordId}
+    </update>
+
+    <!-- 删除记录 -->
+    <delete id="deleteRecord" parameterType="String">
+        delete from ipRecord where recordId = #{recordId}
+    </delete>
+</mapper>
