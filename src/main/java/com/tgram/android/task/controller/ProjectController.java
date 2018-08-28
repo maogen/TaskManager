@@ -34,6 +34,23 @@ import java.util.List;
 public class ProjectController extends BaseController {
 
     @ApiOperation("根据地市id，获取关联的项目列表")
+    @RequestMapping(method = RequestMethod.POST, value = "findAllProject")
+    public String findAllProject(HttpServletRequest request, HttpServletResponse response) {
+        // 验证token
+        BaseResult<String> tokenResult = isTokenOver(request);
+        if (!SysCode.SUCCESS_CODE.equals(tokenResult.getCode())) {
+            // token验证失败
+            return GsonUtil.gsonToString(tokenResult);
+        }
+        BaseResult<List<Project>> result = new BaseResult<>();
+        List<Project> list = projectMapper.findAllProject();
+        result.setCode(SysCode.SUCCESS_CODE);
+        result.setMsg("请求成功");
+        result.setData(list);
+        return GsonUtil.gsonToString(result);
+    }
+
+    @ApiOperation("根据地市id，获取关联的项目列表")
     @RequestMapping(method = RequestMethod.POST, value = "findProjectByPlace")
     public String findProjectByPlace(HttpServletRequest request, HttpServletResponse response,
                                      @RequestBody ProjectFindByPlace projectFindByPlace) {

@@ -9,15 +9,22 @@
         select * from project where placeId = #{placeId}
     </select>
 
+    <!-- 根据地市id和名称查找项目 -->
+    <select id="findProjectByPlaceIdAndName" parameterType="String" resultType="com.tgram.android.task.bean.Project">
+        select * from project where placeId = #{0} and projectName = #{1}
+    </select>
+
+
+    <!-- 查找所有项目 -->
+    <select id="findAllProject" resultType="com.tgram.android.task.bean.Project">
+        select * from project
+    </select>
+
     <!-- 根据id查找项目 -->
     <select id="findProjectById" parameterType="String" resultType="com.tgram.android.task.bean.Project">
         select * from project where projectId = #{projectId}
     </select>
 
-    <!-- 根据地市id和名称查找项目 -->
-    <select id="findProjectByPlaceIdAndName" parameterType="String" resultType="com.tgram.android.task.bean.Project">
-        select * from project where placeId = #{0} and projectName = #{1}
-    </select>
 
     <!-- 新增项目 -->
     <insert id="insertProject" parameterType="com.tgram.android.task.bean.Project">

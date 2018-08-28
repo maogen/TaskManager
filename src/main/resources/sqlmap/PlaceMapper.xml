@@ -42,4 +42,5 @@
         on b.projectId = c.projectId
         where a.placeId = #{placeId}
     </delete>
+
 </mapper>

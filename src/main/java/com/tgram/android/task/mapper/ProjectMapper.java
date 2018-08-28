@@ -20,13 +20,6 @@ public interface ProjectMapper {
      */
     List<Project> findProjectByPlaceId(String placeId);
 
-    /**
-     * 根据id查找项目
-     *
-     * @param projectId
-     * @return
-     */
-    Project findProjectById(String projectId);
 
     /**
      * 根据地市id和项目名查找项目
@@ -36,6 +29,20 @@ public interface ProjectMapper {
      * @return
      */
     Project findProjectByPlaceIdAndName(String placeId, String projectName);
+
+    /**
+     * 查找所有项目
+     * @return
+     */
+    List<Project> findAllProject();
+
+    /**
+     * 根据id查找项目
+     *
+     * @param projectId
+     * @return
+     */
+    Project findProjectById(String projectId);
 
     /**
      * 新增项目
